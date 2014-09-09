@@ -1,2 +1,4 @@
-First file  in the repo. Try to change it
+﻿First file  in the repo. Try to change it
 jou, saab muuta küll
+
+muutsin arvutist by harri
