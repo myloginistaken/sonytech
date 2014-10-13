@@ -14,6 +14,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
+
 public class IntroUI {
 	
 	private JFrame frame;
