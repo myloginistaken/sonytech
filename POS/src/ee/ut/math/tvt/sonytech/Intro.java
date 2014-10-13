@@ -1,9 +1,4 @@
 package ee.ut.math.tvt.sonytech;
-
-import java.awt.*;
-
-import javax.swing.*;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 

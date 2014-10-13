@@ -3,16 +3,11 @@ package ee.ut.math.tvt.sonytech;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Properties;
 
-import javax.imageio.ImageIO;
-
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-
 import javax.swing.*;
+
+import org.apache.log4j.Logger;
 
 public class IntroUI {
 	
@@ -21,10 +16,11 @@ public class IntroUI {
 	Properties applicationProp;
 	Properties versionProp;
 	ImageIcon logo = null;
+	static Logger logger;
 	
 	public IntroUI() {
 		
-	    static Logger logger = Logger.getLogger(IntroUI.class);
+	    logger = Logger.getLogger(IntroUI.class);
 		
 	    frame = new JFrame("Sonytech");
 	    panel = new JPanel();
@@ -49,7 +45,7 @@ public class IntroUI {
 		panel.add(new JLabel("Team leader: "+ applicationProp.getProperty("leader")));
 		panel.add(new JLabel("Team leader email: " + applicationProp.getProperty("leaderEmail")));
 		panel.add(new JLabel("Team members: " + applicationProp.getProperty("members")));
-	//	panel.add(new JLabel("Version: " + versionProp.getProperty("build.number")));
+		panel.add(new JLabel("Version: " + versionProp.getProperty("build.number")));
 		
 		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
