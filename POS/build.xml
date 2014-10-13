@@ -102,6 +102,8 @@
 
 		<propertyfile file="version.properties" comment="Version properties">
 			<entry key="build.revision.number" type="int" default="0" operation="+" />
+			<entry key="build.major.number" type="int" default="0" />
+			<entry key="build.minor.number" type="int" default="0" />
 		</propertyfile>
 
 		<property file="version.properties" prefix="new" />
