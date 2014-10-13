@@ -24,6 +24,8 @@ public class IntroUI {
 	
 	public IntroUI() {
 		
+	    static Logger logger = Logger.getLogger(IntroUI.class);
+		
 	    frame = new JFrame("Sonytech");
 	    panel = new JPanel();
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,5 +54,10 @@ public class IntroUI {
 		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	public void logi(String string) {
+		logger.info("Ran!");
+		
 	}
 }
