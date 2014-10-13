@@ -26,11 +26,8 @@ public class IntroUI {
 		
 	    frame = new JFrame("Sonytech");
 	    panel = new JPanel();
-	    frame.setSize(400, 350); 
-	    frame.setLocationRelativeTo(null);
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setResizable(false);
-	    frame.setVisible(true);
 
 	    applicationProp = new Properties();
 	    versionProp = new Properties();
@@ -42,6 +39,7 @@ public class IntroUI {
 	    	e.printStackTrace();
 	    }
 		
+		
 		logo = new ImageIcon(applicationProp.getProperty("logo"));
 		
 		panel.add(new JLabel(logo));
@@ -52,5 +50,7 @@ public class IntroUI {
 	//	panel.add(new JLabel("Version: " + versionProp.getProperty("build.number")));
 		
 		frame.add(panel,BorderLayout.CENTER);
+		frame.pack();
+		frame.setVisible(true);
 	}
 }
