@@ -7,21 +7,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+
 import javax.swing.*;
 
 public class IntroUI {
 	
 	private JFrame frame;
 	private JPanel panel;
-	private JLabel header;
 	Properties applicationProp;
 	Properties versionProp;
 	ImageIcon logo = null;
 	
 	public IntroUI() {
+		
 	    frame = new JFrame("Sonytech");
 	    panel = new JPanel();
-		header = new JLabel();
 	    frame.setSize(400, 350); 
 	    frame.setLocationRelativeTo(null);
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,15 +42,9 @@ public class IntroUI {
 	    	e.printStackTrace();
 	    }
 		
+		logo = new ImageIcon(applicationProp.getProperty("logo"));
 		
-		try {
-			logo = new ImageIcon(new URL(applicationProp.getProperty("logo")));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		header.add(new JLabel(logo));
+		panel.add(new JLabel(logo));
 		panel.add(new JLabel("Team name: "+ applicationProp.getProperty("name")));
 		panel.add(new JLabel("Team leader: "+ applicationProp.getProperty("leader")));
 		panel.add(new JLabel("Team leader email: " + applicationProp.getProperty("leaderEmail")));
@@ -54,6 +52,5 @@ public class IntroUI {
 	//	panel.add(new JLabel("Version: " + versionProp.getProperty("build.number")));
 		
 		frame.add(panel,BorderLayout.CENTER);
-		frame.add(header, BorderLayout.NORTH); 
 	}
 }
