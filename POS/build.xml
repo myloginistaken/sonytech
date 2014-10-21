@@ -3,17 +3,17 @@
 
 	<!-- Definitions of variables used during the rest of this script -->
 
-	<property file="version.properties"/>
-	<property file="application.properties"/>
-	
-	<property name="build.dir" value="${basedir}/build"/>
-	<property name="build.classes.dir" value="${build.dir}/classes"/>
-	<property name="src.dir" value="${basedir}/src"/>
-	<property name="dist.dir" value="${basedir}/dist"/>
-	<property name="conf.dir" value="${basedir}/etc"/>
-	<property name="doc.dir" value="${build.dir}/doc"/>
-	<property name="test.reports.dir" value="${build.dir}/reports/"/>
-	
+	<property file="version.properties" />
+	<property file="application.properties" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="dist.dir" value="${basedir}/build/jar/" />
+	<property name="conf.dir" value="${basedir}/etc" />
+	<property name="doc.dir" value="${build.dir}/doc" />
+	<property name="test.reports.dir" value="${build.dir}/reports/" />
+
 	<property name="dist.jar" value="${dist.dir}/sonytech.jar" />
 	<property name="main.class" value="ee.ut.math.tvt.sonytech.Intro" />
 
@@ -21,49 +21,54 @@
 
 	<path id="compile.classpath">
 		<fileset dir="lib">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
 	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}"/>
+		<pathelement location="${build.classes.dir}" />
 		<!-- configuration -->
-		<pathelement location="${conf.dir}"/>
+		<pathelement location="${conf.dir}" />
 		<fileset dir="lib">
-			<include name="*.jar"/>
+			<include name="*.jar" />
 		</fileset>
 	</path>
 
-	<!-- Definitions of runnable ant targets.
-         Run them from the command line by executing "ant [targetname]"  -->
+	<!-- Definitions of runnable ant targets. Run them from the command line 
+		by executing "ant [targetname]" -->
 
 	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="test.classpath" fork="yes" />
+		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="test.classpath"
+			fork="yes" />
 	</target>
 
 	<target name="build" description="Build the system">
-		<mkdir dir="${build.dir}"/>
-		<mkdir dir="${build.classes.dir}"/>
-		<javac
-            srcdir="${src.dir}"
-            destdir="${build.classes.dir}"
-            debug="true"
-            debuglevel="lines,vars,source"
-            encoding="utf-8"
-            compiler="modern"
-            target="1.7"
-            source="1.7"
-			includeantruntime="false">
-			<classpath refid="compile.classpath"/>
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes.dir}" />
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true"
+			debuglevel="lines,vars,source" encoding="utf-8" compiler="modern"
+			target="1.7" source="1.7" includeantruntime="false">
+			<classpath refid="compile.classpath" />
 		</javac>
 
 	</target>
-	
-	
-	<target name="dist" description="Build .jar file for distribution." depends="increaseRevision, build">
+
+	<target name="dist" description="Build .jar file for distribution."
+		depends="increaseRevision, build">
 		<jar destfile="${dist.jar}" basedir="${build.classes.dir}">
-			<zipfileset dir="${basedir}" includes="application.properties" fullpath="application.properties" />
-			<zipfileset dir="${basedir}" includes="version.properties" fullpath="version.properties" />
+			<zipfileset dir="${basedir}" includes="application.properties"
+				fullpath="application.properties" />
+			<zipfileset dir="${basedir}" includes="version.properties"
+				fullpath="version.properties" />
+			<zipfileset dir="${basedir}" includes="log4j.properties"
+				fullpath="log4j.properties" />
+			<zipfileset dir="${basedir}" includes="sonytech_logogo.png"
+				fullpath="sonytech_logogo.png" />
+			<archives>
+				<zips>
+					<fileset dir="lib" includes="**/*.jar" />
+				</zips>
+			</archives>
 			<manifest>
 				<attribute name="Main-Class" value="${main.class}" />
 				<attribute name="Implementation-Vendor" value="sonytech" />
@@ -71,37 +76,33 @@
 				<attribute name="Implementation-Version" value="${build.number}" />
 			</manifest>
 		</jar>
-		<copy todir="${dist.lib.dir}" flatten="true">
-			<path refid="compile.classpath" />
-		</copy>
 	</target>
 
 	<!-- Build internal documentation -->
 	<target name="javadoc" description="Build internal documentation">
-		<mkdir dir="${doc.dir}"/>
+		<mkdir dir="${doc.dir}" />
 		<javadoc destdir="${doc.dir}" classpathref="compile.classpath">
-			<fileset dir="${src.dir}" includes="**/*.java"/>
+			<fileset dir="${src.dir}" includes="**/*.java" />
 		</javadoc>
 	</target>
 
 	<!-- Clean up build system results -->
 	<target name="clean" description="Clean up build system results">
-		<delete dir="${build.dir}"/>
+		<delete dir="${build.dir}" />
 	</target>
-	
+
 	<!-- Run .jar file -->
 	<target name="jrun" description="Run the built jar file.">
 		<java jar="${dist.jar}" fork="true" />
 	</target>
-	
-	
-	
+
 	<!-- Revision management -->
-	
+
 	<target name="increaseRevision" description="Increase revision and update version.properties.">
 
 		<propertyfile file="version.properties" comment="Version properties">
-			<entry key="build.revision.number" type="int" default="0" operation="+" />
+			<entry key="build.revision.number" type="int" default="0"
+				operation="+" />
 			<entry key="build.major.number" type="int" default="0" />
 			<entry key="build.minor.number" type="int" default="0" />
 		</propertyfile>
@@ -109,7 +110,8 @@
 		<property file="version.properties" prefix="new" />
 
 		<propertyfile file="version.properties" comment="Version properties">
-			<entry key="build.number" operation="=" value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
+			<entry key="build.number" operation="="
+				value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>
 
