@@ -6,3 +6,6 @@
 # Ignore .class files
 bin/*
 
+# Ignore build directory
+build/*
+

@@ -9,7 +9,7 @@ import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
 public class Intro {
 	
-	// igaksjuhuks ei kustutanud veel Logger loggerit-t ära
+	// igaksjuhuks ei kustutanud veel Logger loggerit-t ara
 	final static Logger logger = Logger.getLogger(Intro.class);
 	private static final String MODE = "console";
 	private static final Logger log = Logger.getLogger(Intro.class);
@@ -28,7 +28,7 @@ public class Intro {
 			cui.run();
 		} else {
 
-			// PS! kommenteerisin siit välja asjad, mis mul erroris eclipses olid
+			// PS! kommenteerisin siit valja asjad, mis mul erroris eclipses olid
 			IntroUI introUI = new IntroUI();
 			//introUI.setVisible(true);
 			//introUI.setAlwaysOnTop(true);
