@@ -29,7 +29,7 @@ public class Intro {
 		} else {
 
 			// PS! kommenteerisin siit välja asjad, mis mul erroris eclipses olid
-			IntroUI introUI = new IntroUI();
+			//IntroUI introUI = new IntroUI();
 			//introUI.setVisible(true);
 			//introUI.setAlwaysOnTop(true);
 

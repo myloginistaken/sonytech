@@ -188,6 +188,7 @@ public class PurchaseTab {
   private void startNewSale() {
     purchasePane.reset();
 
+    purchasePane.fillComboBox();
     purchasePane.setEnabled(true);
     submitPurchase.setEnabled(true);
     cancelPurchase.setEnabled(true);
