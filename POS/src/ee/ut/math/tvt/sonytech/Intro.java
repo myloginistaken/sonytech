@@ -27,14 +27,8 @@ public class Intro {
 			ConsoleUI cui = new ConsoleUI(domainController);
 			cui.run();
 		} else {
-
-<<<<<<< HEAD
 			// PS! kommenteerisin siit valja asjad, mis mul erroris eclipses olid
 			IntroUI introUI = new IntroUI();
-=======
-			// PS! kommenteerisin siit välja asjad, mis mul erroris eclipses olid
-			//IntroUI introUI = new IntroUI();
->>>>>>> 0ef0f8b2d8733465805296afcd325d11438d7c3d
 			//introUI.setVisible(true);
 			//introUI.setAlwaysOnTop(true);
 
