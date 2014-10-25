@@ -2,6 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,11 +19,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -35,7 +39,7 @@ public class PurchaseItemPanel extends JPanel {
     private JTextField barCodeField;
     private JTextField quantityField;
     private JTextField priceField;
-	private JComboBox<String> itemSelector;
+    private JComboBox<String> itemSelector;
     private String itemName;
 
     private JButton addItemButton;
@@ -165,7 +169,7 @@ public class PurchaseItemPanel extends JPanel {
     /**
      * Add new item to the cart.
      */
-    public void addItemEventHandler() {
+    public void addItemEventHandler(){
         // add chosen item to the shopping cart.
         StockItem stockItem = getStockItemByName(itemName);
         if (stockItem != null) {
@@ -175,8 +179,12 @@ public class PurchaseItemPanel extends JPanel {
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-            model.getCurrentPurchaseTableModel()
-                .addItem(new SoldItem(stockItem, quantity));
+            try{
+                model.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
+            }
+            catch (NotEnoughInStockException e){
+                JOptionPane.showMessageDialog(this, "Cannot order, not enough resources in stock!", "Out of stock!", JOptionPane.ERROR_MESSAGE); 
+            }
         }
     }
 
@@ -246,6 +254,15 @@ public class PurchaseItemPanel extends JPanel {
         gc.weighty = 1.0;
 
         return gc;
+    }
+
+    private static class NotEnoughStockException {
+        
+        String errValue;
+        
+        public NotEnoughStockException() {
+            this.errValue = "Not enough stock";
+        }
     }
 
 }
