@@ -3,7 +3,13 @@ package ee.ut.math.tvt.salessystem.ui.model;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JComponent;
 
 /**
  * Purchase history details model.
@@ -28,7 +34,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
 			return item.getPrice();
 		case 3:
 			return item.getQuantity();
-		case 4:
+                case 4:
                         return item.getQuantity() * item.getPrice();
 		}
 		throw new IllegalArgumentException("Column index out of range");
@@ -57,14 +63,25 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
     /**
      * Add new StockItem to table.
      */
-    public void addItem(final SoldItem item) {
+    public void addItem(final SoldItem item) throws NotEnoughInStockException{
         /**
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
          */
-        
+        log.debug(" \n Added! " + item + "\n");
+        log.debug("getId() : " + item.getId() + " \n");
+        if (item.getQuantity() > item.getStockItem().getQuantity()){
+            log.debug("More ordered than in stock.");
+            throw new NotEnoughInStockException();     
+        }
+        else{
+        log.debug("getQuantity: " + item.getStockItem().getQuantity());     
+        log.debug("\n");
         rows.add(item);
         log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
         fireTableDataChanged();
+        }
+        
     }
+
 }
