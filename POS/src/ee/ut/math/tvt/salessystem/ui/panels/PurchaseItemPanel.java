@@ -183,7 +183,8 @@ public class PurchaseItemPanel extends JPanel {
                 model.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
             }
             catch (NotEnoughInStockException e){
-                JOptionPane.showMessageDialog(this, "Cannot order, not enough resources in stock!", "Out of stock!", JOptionPane.ERROR_MESSAGE); 
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                JOptionPane.showMessageDialog(topFrame, "Cannot order, not enough resources in stock!", "Out of stock!", JOptionPane.ERROR_MESSAGE); 
             }
         }
     }
@@ -264,5 +265,4 @@ public class PurchaseItemPanel extends JPanel {
             this.errValue = "Not enough stock";
         }
     }
-
 }

@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 /**
@@ -157,6 +159,8 @@ public class PurchaseTab {
       domainController.cancelCurrentPurchase();
       endSale();
       model.getCurrentPurchaseTableModel().clear();
+      
+      
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
     }
@@ -168,6 +172,7 @@ public class PurchaseTab {
     log.info("Sale complete");
     try {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
+      log.debug(" \n\n " + model.getCurrentPurchaseTableModel().getTableRows() + " \n\n ");
       domainController.submitCurrentPurchase(
           model.getCurrentPurchaseTableModel().getTableRows()
       );
@@ -250,5 +255,5 @@ public class PurchaseTab {
 
     return gc;
   }
-
+ 
 }

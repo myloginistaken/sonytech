@@ -52,12 +52,13 @@ public class SoldItem implements Cloneable, DisplayableItem {
         return quantity;
     }
     
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public double getSum() {
+        return (double) quantity * price;
     }
 
-    public double getSum() {
-        return price * ((double) quantity);
+    
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public StockItem getStockItem() {
