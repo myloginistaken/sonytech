@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.domain.controller.impl;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +9,13 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
 
 import org.apache.log4j.Logger;
 
@@ -23,12 +26,14 @@ import org.apache.log4j.Logger;
 public class SalesDomainControllerImpl implements SalesDomainController {
     
         private static final Logger log = Logger.getLogger(SalesDomainControllerImpl.class);
+        public static JButton calc = new JButton("Calc");
         public static JTextField payment = new JTextField(5);
         public static JTextField change = new JTextField(5);
+        private static double final_price;
         
 	public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
             
-            double final_price = 0;
+            final_price = 0;
             
             
             for (SoldItem item : goods){
@@ -44,10 +49,48 @@ public class SalesDomainControllerImpl implements SalesDomainController {
             panel.add(payment);
             panel.add(new JLabel("Change amount: " + "\n"));
             panel.add(change);
+            panel.add(calc);
             
             int dialogResult = JOptionPane.showConfirmDialog (null, panel, "Confirmation", JOptionPane.YES_NO_OPTION);
+            
+           /* calc.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                double paidMoney = 0.0;
+					try {
+	                    paidMoney = Double.parseDouble(payment.getText());
+	                } catch (NumberFormatException nfe) {
+	                    JOptionPane.showMessageDialog(null, "amount has to be in numbers");
+	                    return;
+	                }
+	                double returnMoney = paidMoney - final_price;
+	                log.debug("return: " + returnMoney + "\n");
+	                change.setText(Double.toString(returnMoney));
+	                if (returnMoney >= 0) {
+	                	JOptionPane.showMessageDialog(null, "neeger oled.");
+	                } else {
+	                    JOptionPane.showMessageDialog(null, "Not enough cash entered.");
+	                }
+	            }
+            });
+*/            
+           
             if(dialogResult == JOptionPane.YES_OPTION){
-                //SAVE EVERYTHING
+            	
+            	double paidMoney = 0.0;
+				try {
+                    paidMoney = Double.parseDouble(payment.getText());
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "amount has to be in numbers");
+                    return;
+                }
+                double returnMoney = paidMoney - final_price;
+
+                change.setText(Double.toString(returnMoney));
+                if (returnMoney >= 0) {
+                	JOptionPane.showMessageDialog(null, "Please return " + returnMoney);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Not enough cash entered.");
+                }
             }
             if(dialogResult == JOptionPane.NO_OPTION){
                 throw new VerificationFailedException("Canceled");
