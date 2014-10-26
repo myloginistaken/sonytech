@@ -28,7 +28,7 @@ public class Intro {
 			cui.run();
 		} else {
 			// PS! kommenteerisin siit valja asjad, mis mul erroris eclipses olid
-			IntroUI introUI = new IntroUI();
+			//IntroUI introUI = new IntroUI();
 			//introUI.setVisible(true);
 			//introUI.setAlwaysOnTop(true);
 

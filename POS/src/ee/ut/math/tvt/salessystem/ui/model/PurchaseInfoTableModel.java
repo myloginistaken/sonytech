@@ -3,8 +3,9 @@ package ee.ut.math.tvt.salessystem.ui.model;
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
-import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
+import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
@@ -63,14 +64,14 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
     /**
      * Add new StockItem to table.
      */
-    public void addItem(final SoldItem item) throws NotEnoughInStockException{
+    public void addItem(final SoldItem item) throws SalesSystemException{
         /**
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
          */
         if (item.getQuantity() > item.getStockItem().getQuantity()){
             log.debug("More ordered than in stock.");
-            throw new NotEnoughInStockException();     
+           // throw new NotEnoughInStockException();     
         }
         else{   
         rows.add(item);

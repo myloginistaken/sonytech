@@ -2,8 +2,10 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
+import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -15,6 +17,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.NoSuchElementException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -182,9 +185,8 @@ public class PurchaseItemPanel extends JPanel {
             try{
                 model.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
             }
-            catch (NotEnoughInStockException e){
-                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                JOptionPane.showMessageDialog(topFrame, "Cannot order, not enough resources in stock!", "Out of stock!", JOptionPane.ERROR_MESSAGE); 
+            catch (SalesSystemException e){
+            	NotEnoughInStockException();
             }
         }
     }
@@ -257,12 +259,13 @@ public class PurchaseItemPanel extends JPanel {
         return gc;
     }
 
-    private static class NotEnoughStockException {
-        
-        String errValue;
-        
-        public NotEnoughStockException() {
-            this.errValue = "Not enough stock";
-        }
+    private void NotEnoughInStockException() {
+    	JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        JOptionPane.showMessageDialog(topFrame,
+        		"Cannot order, not enough resources in stock!", 
+        		"Out of stock!",
+                JOptionPane.ERROR_MESSAGE
+        );
+      //  log.debug("  -- there was not enough cargo in warehouse to add item");
     }
 }
