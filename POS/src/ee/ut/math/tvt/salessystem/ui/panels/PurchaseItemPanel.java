@@ -2,7 +2,7 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
-import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
+import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
@@ -185,8 +185,8 @@ public class PurchaseItemPanel extends JPanel {
             try{
                 model.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
             }
-            catch (SalesSystemException e){
-            	NotEnoughInStockException();
+            catch (NotEnoughInStockException e){
+            	//DO SOMETHING
             }
         }
     }
@@ -259,13 +259,4 @@ public class PurchaseItemPanel extends JPanel {
         return gc;
     }
 
-    private void NotEnoughInStockException() {
-    	JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        JOptionPane.showMessageDialog(topFrame,
-        		"Cannot order, not enough resources in stock!", 
-        		"Out of stock!",
-                JOptionPane.ERROR_MESSAGE
-        );
-      //  log.debug("  -- there was not enough cargo in warehouse to add item");
-    }
 }
