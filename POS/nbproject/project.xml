@@ -17,6 +17,9 @@ auxiliary.show.customizer.message=<message>
                     <type>java</type>
                     <location>src</location>
                 </source-folder>
+                <build-folder>
+                    <location>C:\Users\Sander\Documents\NetBeansProjects\Output</location>
+                </build-folder>
             </folders>
             <ide-actions>
                 <action name="build">
@@ -35,7 +38,16 @@ auxiliary.show.customizer.message=<message>
                     <target>clean</target>
                     <target>build</target>
                 </action>
+                <action name="debug">
+                    <script>nbproject/ide-targets.xml</script>
+                    <target>debug-nb</target>
+                </action>
             </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>C:\Users\Sander\Documents\NetBeansProjects\Output</location>
+                <build-target>build</build-target>
+            </export>
             <view>
                 <items>
                     <source-folder style="packages">
@@ -52,14 +64,17 @@ auxiliary.show.customizer.message=<message>
                     <ide-action name="clean"/>
                     <ide-action name="javadoc"/>
                     <ide-action name="run"/>
+                    <ide-action name="debug"/>
                 </context-menu>
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
                 <classpath mode="compile">lib/log4j-1.2.17.jar:lib/jgoodies-looks-2.5.2.jar:lib/jgoodies-common-1.4.0.jar</classpath>
+                <built-to>C:\Users\Sander\Documents\NetBeansProjects\Output</built-to>
+                <javadoc-built-to>C:\Users\Sander\Documents\NetBeansProjects\Output</javadoc-built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>

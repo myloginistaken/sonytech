@@ -32,7 +32,6 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
     }
     
     @Override
-    // NOT CORRECT DOWN BELOW. DOES NOT POPULATE WITH DATA PROPERLY.
     protected Object getColumnValue(HistoryItem item, int columnIndex) {
         switch (columnIndex){
             case 0:
@@ -65,12 +64,8 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
 	
     
     public void addItem(final HistoryItem item) throws SalesSystemException{
-        /**
-         * XXX In case such stockItem already exists increase the quantity of the
-         * existing stock.
-         */
+        
         rows.add(item);
-        //log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
         fireTableDataChanged();
                
     }

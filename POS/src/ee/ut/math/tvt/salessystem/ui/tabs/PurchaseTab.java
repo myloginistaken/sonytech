@@ -2,6 +2,10 @@ package ee.ut.math.tvt.salessystem.ui.tabs;
 
 import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
+import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
 import java.awt.Color;
@@ -10,10 +14,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
@@ -37,6 +50,14 @@ public class PurchaseTab {
 
   private SalesSystemModel model;
 
+  
+  //NECESSARY
+    public static JTextField payment = new JTextField(5);
+    public static JTextField change = new JTextField(5);
+    static double final_price;
+    private static final List<Integer> ACCEPTED_KEYS = Arrays.asList(KeyEvent.VK_ENTER, KeyEvent.VK_BACK_SPACE, KeyEvent.VK_PERIOD, KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9);
+    
+    
 
   public PurchaseTab(SalesDomainController controller,
       SalesSystemModel model)
@@ -159,8 +180,7 @@ public class PurchaseTab {
       domainController.cancelCurrentPurchase();
       endSale();
       model.getCurrentPurchaseTableModel().clear();
-      
-      
+
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
     }
@@ -173,17 +193,111 @@ public class PurchaseTab {
     try {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       log.debug(" \n\n " + model.getCurrentPurchaseTableModel().getTableRows() + " \n\n ");
-      domainController.submitCurrentPurchase(
-          model.getCurrentPurchaseTableModel().getTableRows()
+      //domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows()
+      this.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows()
       );
-      endSale();
+      this.endSale();
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
       log.error(e1.getMessage());
+      this.endSale();
     }
   }
 
+  public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
 
+        final_price = 0;
+        payment.setText("");
+        change.setText("");
+
+        for (SoldItem item : goods) {
+            final_price += item.getSum();
+
+        }
+
+        log.debug("Final price: " + final_price + "\n");
+
+        payment.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent ke) {
+                char c = ke.getKeyChar();
+                if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE) && (c != KeyEvent.VK_PERIOD)) {
+                    ke.consume();  // ignore event
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                if (ACCEPTED_KEYS.contains(ke.getKeyCode())) {
+                    try {
+                        log.debug("KEYCODE: " + ke.getKeyChar() + "\n" + payment.getText() + "\n\n");
+                        log.debug(Double.parseDouble(payment.getText()) - final_price);
+                        change.setText(Double.toString(Double.parseDouble(payment.getText()) - final_price));
+                    } catch (NumberFormatException e) {
+                        change.setText(Double.toString(0.0));
+                    }
+                }
+            }
+        });
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Total price: " + final_price + "\n"));
+        panel.add(new JLabel("Payment amount: " + "\n"));
+        panel.add(payment);
+        panel.add(new JLabel("Change amount: " + "\n"));
+        change.setEditable(false);
+        panel.add(change);
+
+        inputValidation(panel, goods);
+        
+        //item.endSale();
+
+        // XXX - Save purchase
+    }
+
+    public HistoryItem inputValidation(JPanel panel, List<SoldItem> goods) throws VerificationFailedException {        
+        int dialogResult = JOptionPane.showConfirmDialog(null, panel, "Confirm payment", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+
+            if (Double.parseDouble(change.getText()) >= 0) {
+                JOptionPane.showMessageDialog(null, "Please return " + Double.parseDouble(change.getText()));
+                try {
+                    this.addToStock(goods);
+                } catch (SalesSystemException ex) {
+                    java.util.logging.Logger.getLogger(PurchaseTab.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                inputValidation(panel, goods);
+                //TRY AGAIN
+            }
+        }
+        if (dialogResult == JOptionPane.NO_OPTION) {
+            domainController.cancelCurrentPurchase();
+            //BACK TO PREVIOUS STATE
+        }
+        return null;
+    }
+    
+    public void removeFromWarehouse(){
+        
+        
+    }
+    
+    public void addToStock(List<SoldItem> goods) throws SalesSystemException{
+        Date date = new Date();
+        log.debug("\n\n\n");
+        //log.debug(goods);
+        //log.debug(date);
+        //log.debug(final_price);
+        HistoryItem h = new HistoryItem(final_price, date, goods);
+        model.getHistoryTableModel().addItem(h);
+        
+        log.debug(h.toString());
+    }
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
@@ -209,9 +323,6 @@ public class PurchaseTab {
     newPurchase.setEnabled(true);
     purchasePane.setEnabled(false);
   }
-
-
-
 
   /* === Next methods just create the layout constraints objects that control the
    *     the layout of different elements in the purchase tab. These definitions are

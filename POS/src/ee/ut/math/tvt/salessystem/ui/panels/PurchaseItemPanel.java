@@ -3,33 +3,24 @@ package ee.ut.math.tvt.salessystem.ui.panels;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.NotEnoughInStockException;
-import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 /**
  * Purchase pane + shopping cart tabel UI.
@@ -52,9 +43,8 @@ public class PurchaseItemPanel extends JPanel {
 
     /**
      * Constructs new purchase item panel.
-     * 
-     * @param model
-     *            composite model of the warehouse and the shopping cart.
+     *
+     * @param model composite model of the warehouse and the shopping cart.
      */
     public PurchaseItemPanel(SalesSystemModel model) {
         this.model = model;
@@ -99,18 +89,17 @@ public class PurchaseItemPanel extends JPanel {
         quantityField = new JTextField("1");
         priceField = new JTextField();
 
-     // Fill the dialog fields if the selected item in the JComboBox changes
+        // Fill the dialog fields if the selected item in the JComboBox changes
         itemSelector.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-				itemName = (String) itemSelector.getSelectedItem();
-				fillDialogFields();
-			}
+            public void actionPerformed(ActionEvent e) {
+                itemName = (String) itemSelector.getSelectedItem();
+                fillDialogFields();
+            }
         });
 
         priceField.setEditable(false);
 
         // == Add components to the panel
-
         // - selector
         panel.add(new JLabel("Item:"));
         panel.add(itemSelector);
@@ -151,15 +140,15 @@ public class PurchaseItemPanel extends JPanel {
             reset();
         }
     }
-    
-	// get combobox items
+
+    // get combobox items
     public void fillComboBox() {
-    	java.util.List<StockItem> items = model.getWarehouseTableModel().getTableRows();
-    	for(int i = 0;i<items.size();i++) {
-    		itemSelector.addItem(items.get(i).getName());
-    	}
+        java.util.List<StockItem> items = model.getWarehouseTableModel().getTableRows();
+        for (int i = 0; i < items.size(); i++) {
+            itemSelector.addItem(items.get(i).getName());
+        }
     }
-    
+
     // Search the warehouse for a StockItem with the selected item
     private StockItem getStockItemByName(String name) {
         try {
@@ -168,11 +157,11 @@ public class PurchaseItemPanel extends JPanel {
             return null;
         }
     }
-    
+
     /**
      * Add new item to the cart.
      */
-    public void addItemEventHandler(){
+    public void addItemEventHandler() {
         // add chosen item to the shopping cart.
         StockItem stockItem = getStockItemByName(itemName);
         if (stockItem != null) {
@@ -182,11 +171,10 @@ public class PurchaseItemPanel extends JPanel {
             } catch (NumberFormatException ex) {
                 quantity = 1;
             }
-            try{
+            try {
                 model.getCurrentPurchaseTableModel().addItem(new SoldItem(stockItem, quantity));
-            }
-            catch (NotEnoughInStockException e){
-            	//DO SOMETHING
+            } catch (NotEnoughInStockException e) {
+                //DO SOMETHING
             }
         }
     }
@@ -196,7 +184,7 @@ public class PurchaseItemPanel extends JPanel {
      */
     @Override
     public void setEnabled(boolean enabled) {
-    	this.itemSelector.setEnabled(enabled);
+        this.itemSelector.setEnabled(enabled);
         this.barCodeField.setEnabled(enabled);
         this.quantityField.setEnabled(enabled);
     }
@@ -222,7 +210,6 @@ public class PurchaseItemPanel extends JPanel {
      * more important methods unburdened of the messy layout code. This is done
      * in the following methods.
      */
-
     // Formatting constraints for the dialogPane
     private GridBagConstraints getDialogPaneConstraints() {
         GridBagConstraints gc = new GridBagConstraints();
@@ -258,5 +245,4 @@ public class PurchaseItemPanel extends JPanel {
 
         return gc;
     }
-
 }
