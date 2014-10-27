@@ -5,6 +5,7 @@ import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.controller.impl.SalesDomainControllerImpl;
 import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.ui.panels.PurchaseItemPanel;
@@ -234,8 +235,6 @@ public class PurchaseTab {
             public void keyReleased(KeyEvent ke) {
                 if (ACCEPTED_KEYS.contains(ke.getKeyCode())) {
                     try {
-                        log.debug("KEYCODE: " + ke.getKeyChar() + "\n" + payment.getText() + "\n\n");
-                        log.debug(Double.parseDouble(payment.getText()) - final_price);
                         change.setText(Double.toString(Double.parseDouble(payment.getText()) - final_price));
                     } catch (NumberFormatException e) {
                         change.setText(Double.toString(0.0));
@@ -266,7 +265,8 @@ public class PurchaseTab {
             if (Double.parseDouble(change.getText()) >= 0) {
                 JOptionPane.showMessageDialog(null, "Please return " + Double.parseDouble(change.getText()));
                 try {
-                    this.addToStock(goods);
+                    this.addToHistory(goods);
+                    this.removeFromWarehouse(goods);
                 } catch (SalesSystemException ex) {
                     java.util.logging.Logger.getLogger(PurchaseTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -282,21 +282,27 @@ public class PurchaseTab {
         return null;
     }
     
-    public void removeFromWarehouse(){
+    public void removeFromWarehouse(List<SoldItem> goods){
         
-        
+        for (SoldItem item : goods) {
+            
+            System.out.println("\n\n\n" + item.getId());
+            System.out.println(item.getQuantity());
+            
+            for (StockItem h : model.getWarehouseTableModel().getTableRows()){
+                if (h.getId() == item.getId()){
+                    h.setQuantity(h.getQuantity() - item.getQuantity());
+                }
+            }
+            
+        }
     }
+
     
-    public void addToStock(List<SoldItem> goods) throws SalesSystemException{
+    public void addToHistory(List<SoldItem> goods) throws SalesSystemException{
         Date date = new Date();
-        log.debug("\n\n\n");
-        //log.debug(goods);
-        //log.debug(date);
-        //log.debug(final_price);
         HistoryItem h = new HistoryItem(final_price, date, goods);
         model.getHistoryTableModel().addItem(h);
-        
-        log.debug(h.toString());
     }
 
   /* === Helper methods that bring the whole purchase-tab to a certain state
