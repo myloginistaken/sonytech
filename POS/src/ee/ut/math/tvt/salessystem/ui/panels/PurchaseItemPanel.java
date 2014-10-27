@@ -154,9 +154,10 @@ public class PurchaseItemPanel extends JPanel {
     
 	// get combobox items
     public void fillComboBox() {
-    	java.util.List<StockItem> items = model.getWarehouseTableModel().getTableRows();
-    	for(int i = 0;i<items.size();i++) {
-    		itemSelector.addItem(items.get(i).getName());
+    	int itemsCount = model.getWarehouseTableModel().getRowCount(); 
+    	for(int i = 1;i<=itemsCount;i++) {
+    		StockItem product = model.getWarehouseTableModel().getItemById(i);
+    		itemSelector.addItem(product.getName());
     	}
     }
     
@@ -205,6 +206,7 @@ public class PurchaseItemPanel extends JPanel {
      * Reset dialog fields.
      */
     public void reset() {
+    	itemSelector.removeAllItems();
         barCodeField.setText("");
         quantityField.setText("1");
         priceField.setText("");
