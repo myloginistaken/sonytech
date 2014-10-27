@@ -49,21 +49,21 @@ public class SalesDomainControllerImpl implements SalesDomainController {
             panel.add(payment);
             panel.add(new JLabel("Change amount: " + "\n"));
             panel.add(change);
-            panel.add(calc);
             
-            int dialogResult = JOptionPane.showConfirmDialog (null, panel, "Confirmation", JOptionPane.YES_NO_OPTION);
-            
-           /* calc.addActionListener(new ActionListener() {
+            calc.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
+                        log.debug(e);
 	                double paidMoney = 0.0;
-					try {
+                        try {
 	                    paidMoney = Double.parseDouble(payment.getText());
+                            log.debug(payment.getText());
 	                } catch (NumberFormatException nfe) {
 	                    JOptionPane.showMessageDialog(null, "amount has to be in numbers");
 	                    return;
 	                }
 	                double returnMoney = paidMoney - final_price;
 	                log.debug("return: " + returnMoney + "\n");
+                        log.debug(Double.toString(returnMoney));
 	                change.setText(Double.toString(returnMoney));
 	                if (returnMoney >= 0) {
 	                	JOptionPane.showMessageDialog(null, "neeger oled.");
@@ -72,9 +72,15 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	                }
 	            }
             });
-*/            
+            
+            panel.add(calc);
+            
+            int dialogResult = JOptionPane.showConfirmDialog (null, panel, "Confirmation", JOptionPane.YES_NO_OPTION);
+            
+            
+            
            
-            if(dialogResult == JOptionPane.YES_OPTION){
+          /*  if(dialogResult == JOptionPane.YES_OPTION){
             	
             	double paidMoney = 0.0;
                 try {
@@ -87,7 +93,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
                 change.setText(Double.toString(returnMoney));
                 if (returnMoney >= 0) {
-                	JOptionPane.showMessageDialog(null, "Please return " + returnMoney);
+                	//JOptionPane.showMessageDialog(null, "Please return " + returnMoney);
+                    change.setText("TEXT");
                 } else {
                     JOptionPane.showMessageDialog(null, "Not enough cash entered.");
                 }
@@ -96,7 +103,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
                 throw new VerificationFailedException("Canceled");
                 //BACK TO PREVIOUS STATE
             }
-
+*/ 
             //throw new VerificationFailedException("Underaged!");
 
 		

@@ -5,9 +5,9 @@
  */
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
 import org.apache.log4j.Logger;
 
-import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.exception.SalesSystemException;
 import ee.ut.math.tvt.salessystem.ui.SalesSystemUI;
 
@@ -21,7 +21,7 @@ import javax.swing.JComponent;
  *
  * @author Sander
  */
-public class HistoryInfoTableModel extends SalesSystemTableModel<SoldItem>{
+public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
 
     private static final long serialVersionUID = 1L;
 
@@ -33,12 +33,12 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<SoldItem>{
     
     @Override
     // NOT CORRECT DOWN BELOW. DOES NOT POPULATE WITH DATA PROPERLY.
-    protected Object getColumnValue(SoldItem item, int columnIndex) {
+    protected Object getColumnValue(HistoryItem item, int columnIndex) {
         switch (columnIndex){
             case 0:
-                    return item;//.getId(); //TODO
+                    return item.getDate();
             case 1:
-                    return item;//.getName(); //TODO
+                    return item.getTime();
             case 2:
                     return item.getSum();
         }
@@ -53,9 +53,9 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<SoldItem>{
                     buffer.append(headers[i] + "\t");
             buffer.append("\n");
 
-            for (final SoldItem item : rows) {
-                    buffer.append(item.getId() + "\t");
-                    buffer.append(item.getName() + "\t");
+            for (final HistoryItem item : rows) {
+                    buffer.append(item.getDate() + "\t");
+                    buffer.append(item.getTime() + "\t");
                     buffer.append(item.getSum() + "\t");
                     buffer.append("\n");
             }
@@ -64,13 +64,13 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<SoldItem>{
     }
 	
     
-    public void addItem(final SoldItem item) throws SalesSystemException{
+    public void addItem(final HistoryItem item) throws SalesSystemException{
         /**
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
          */
         rows.add(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
+        //log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
         fireTableDataChanged();
                
     }
