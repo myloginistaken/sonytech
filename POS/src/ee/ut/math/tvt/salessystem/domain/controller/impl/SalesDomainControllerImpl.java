@@ -9,6 +9,7 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.ui.tabs.PurchaseTab;
 import java.awt.event.KeyAdapter;
 
 import java.util.Arrays;
@@ -51,10 +52,12 @@ public class SalesDomainControllerImpl implements SalesDomainController {
                 }
             }
 
+            @Override
             public void keyPressed(KeyEvent ke) {
 
             }
 
+            @Override
             public void keyReleased(KeyEvent ke) {
                 if (ACCEPTED_KEYS.contains(ke.getKeyCode())) {
                     try {
@@ -77,18 +80,20 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         panel.add(change);
 
         inputValidation(panel);
+        
+        //panel.endSale();
 
-		// XXX - Save purchase
+        // XXX - Save purchase
     }
 
-    public void inputValidation(JPanel panel) throws VerificationFailedException{
-        
+    public void inputValidation(JPanel panel) throws VerificationFailedException {
+
         int dialogResult = JOptionPane.showConfirmDialog(null, panel, "Confirm payment", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
-            
-            if (Double.parseDouble(change.getText()) > 0) {
+
+            if (Double.parseDouble(change.getText()) >= 0) {
                 JOptionPane.showMessageDialog(null, "Please return " + Double.parseDouble(change.getText()));
-                
+
             } else {
                 inputValidation(panel);
             }
@@ -99,7 +104,6 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         }
 
     }
-
 
     public void cancelCurrentPurchase() throws VerificationFailedException {
         // XXX - Cancel current purchase
