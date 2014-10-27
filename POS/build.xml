@@ -158,7 +158,7 @@
 		</exec>
 		<exec executable="git">
 			<arg value="push" />
-			<arg value="https://${usenameTag}:${passwdTag}@github.com/myloginistaken/sonytech.git"/>
+			<arg value="https://${usnameTag}:${passwdTag}@github.com/myloginistaken/sonytech.git"/>
 			<arg value="--tags" />
 		</exec>
 	</target>
