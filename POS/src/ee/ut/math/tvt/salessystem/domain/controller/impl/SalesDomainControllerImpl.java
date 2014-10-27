@@ -1,7 +1,7 @@
 package ee.ut.math.tvt.salessystem.domain.controller.impl;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +9,14 @@ import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.domain.controller.SalesDomainController;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import java.awt.event.KeyAdapter;
 
-import javax.swing.JButton;
+import java.util.Arrays;
+
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
@@ -24,17 +25,17 @@ import org.apache.log4j.Logger;
  * Implementation of the sales domain controller.
  */
 public class SalesDomainControllerImpl implements SalesDomainController {
-    
-        private static final Logger log = Logger.getLogger(SalesDomainControllerImpl.class);
-        public static JButton calc = new JButton("Calc");
+        
+        double paidMoney;
+        private static final Logger log = Logger.getLogger(SalesDomainControllerImpl.class);;
         public static JTextField payment = new JTextField(5);
         public static JTextField change = new JTextField(5);
-        private static double final_price;
+        static double final_price;
+        private static final List<Integer> ACCEPTED_KEYS = Arrays.asList(KeyEvent.VK_ENTER, KeyEvent.VK_BACK_SPACE, KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4, KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9);
         
 	public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
             
             final_price = 0;
-            
             
             for (SoldItem item : goods){
                 final_price += item.getSum();
@@ -43,17 +44,30 @@ public class SalesDomainControllerImpl implements SalesDomainController {
             
             log.debug("Final price: " + final_price + "\n");
             
-            JPanel panel = new JPanel();
-            panel.add(new JLabel("Total price: " + final_price + "\n", SwingConstants.CENTER));
-            panel.add(new JLabel("Payment amount: " + "\n"));
-            panel.add(payment);
-            panel.add(new JLabel("Change amount: " + "\n"));
-            panel.add(change);
-            
-            calc.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
+            payment.addKeyListener(new KeyAdapter() {
+                public void keyTyped(KeyEvent ke) {
+                    char c = ke.getKeyChar();
+                    if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+                        ke.consume();  // ignore event
+                    }          
+                }
+                public void keyPressed(KeyEvent ke) {                   
+                                      
+                }
+                public void keyReleased(KeyEvent ke) {       
+                    if (ACCEPTED_KEYS.contains(ke.getKeyCode())){
+                        
+                        log.debug("KEYCODE: "+ ke.getKeyChar() + "\n" + payment.getText() + "\n\n");
+                        log.debug(Double.parseDouble(payment.getText()) - final_price);
+                        change.setText(Double.toString(Double.parseDouble(payment.getText()) - final_price));
+                    }
+                }
+            });               
+                
+            /* public void actionPerformed(ActionEvent e) {
                         log.debug(e);
-	                double paidMoney = 0.0;
+	                double paidMoney;
+                        
                         try {
 	                    paidMoney = Double.parseDouble(payment.getText());
                             log.debug(payment.getText());
@@ -65,22 +79,27 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 	                log.debug("return: " + returnMoney + "\n");
                         log.debug(Double.toString(returnMoney));
 	                change.setText(Double.toString(returnMoney));
-	                if (returnMoney >= 0) {
+	                if (returnMoney >= final_price) {
 	                	JOptionPane.showMessageDialog(null, "neeger oled.");
 	                } else {
 	                    JOptionPane.showMessageDialog(null, "Not enough cash entered.");
 	                }
 	            }
             });
-            
-            panel.add(calc);
+            */
+                
+            JPanel panel = new JPanel();
+            panel.add(new JLabel("Total price: " + final_price + "\n"));
+            panel.add(new JLabel("Payment amount: " + "\n"));
+            panel.add(payment);
+            panel.add(new JLabel("Change amount: " + "\n"));
+            panel.add(change);
             
             int dialogResult = JOptionPane.showConfirmDialog (null, panel, "Confirmation", JOptionPane.YES_NO_OPTION);
+
             
-            
-            
-           
-          /*  if(dialogResult == JOptionPane.YES_OPTION){
+            /*
+        if(dialogResult == JOptionPane.YES_OPTION){
             	
             	double paidMoney = 0.0;
                 try {
@@ -93,8 +112,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
                 change.setText(Double.toString(returnMoney));
                 if (returnMoney >= 0) {
-                	//JOptionPane.showMessageDialog(null, "Please return " + returnMoney);
-                    change.setText("TEXT");
+                    //JOptionPane.showMessageDialog(null, "Please return " + returnMoney);
+                    //change.setText("TEXT");
                 } else {
                     JOptionPane.showMessageDialog(null, "Not enough cash entered.");
                 }
@@ -102,12 +121,13 @@ public class SalesDomainControllerImpl implements SalesDomainController {
             if(dialogResult == JOptionPane.NO_OPTION){
                 throw new VerificationFailedException("Canceled");
                 //BACK TO PREVIOUS STATE
-            }
-*/ 
+            } 
             //throw new VerificationFailedException("Underaged!");
 
-		
+            */
 		// XXX - Save purchase
+
+               
 	}
 
 	public void cancelCurrentPurchase() throws VerificationFailedException {				
