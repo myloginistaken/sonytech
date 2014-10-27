@@ -36,6 +36,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
     public void submitCurrentPurchase(List<SoldItem> goods) throws VerificationFailedException {
 
         final_price = 0;
+        payment.setText("");
+        change.setText("");
 
         for (SoldItem item : goods) {
             final_price += item.getSum();
