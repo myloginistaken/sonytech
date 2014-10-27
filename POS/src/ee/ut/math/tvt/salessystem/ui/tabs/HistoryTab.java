@@ -1,12 +1,20 @@
 package ee.ut.math.tvt.salessystem.ui.tabs;
 
+import ee.ut.math.tvt.salessystem.domain.data.HistoryItem;
+import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
+import ee.ut.math.tvt.salessystem.ui.model.PurchaseInfoTableModel;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -49,12 +57,57 @@ public class HistoryTab {
     private Component drawHistoryMainPane() {
         JPanel panel = new JPanel();
 
-        JTable table = new JTable(model.getHistoryTableModel());
-
+        final JTable table = new JTable(model.getHistoryTableModel());
+       
         JTableHeader header = table.getTableHeader();
         header.setReorderingAllowed(false);
-
         JScrollPane scrollPane = new JScrollPane(table);
+        
+        table.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					int selectedRow = table.getSelectedRow();
+					if(selectedRow>=0) {
+						JFrame frame = new JFrame("Purchase details");
+						HistoryItem solditem = model.getHistoryTableModel().getTableRows().get(selectedRow);
+						PurchaseInfoTableModel history = new PurchaseInfoTableModel();
+						history.populateWithData(solditem.getDetails());
+						JTable historyTable = new JTable(history);
+						JScrollPane scrollPane = new JScrollPane(historyTable);
+						
+						frame.add(scrollPane);
+						frame.setSize(400,400);
+						frame.setLocationRelativeTo(null);
+						frame.setVisible(true);
+					}
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
 
         GridBagConstraints gc = new GridBagConstraints();
         GridBagLayout gb = new GridBagLayout();
