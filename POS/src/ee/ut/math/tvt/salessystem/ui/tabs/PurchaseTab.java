@@ -261,19 +261,26 @@ public class PurchaseTab {
     public HistoryItem inputValidation(JPanel panel, List<SoldItem> goods) throws VerificationFailedException {        
         int dialogResult = JOptionPane.showConfirmDialog(null, panel, "Confirm payment", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
-
-            if (Double.parseDouble(change.getText()) >= 0) {
-                JOptionPane.showMessageDialog(null, "Please return " + Double.parseDouble(change.getText()));
-                try {
-                    this.addToHistory(goods);
-                    this.removeFromWarehouse(goods);
-                } catch (SalesSystemException ex) {
-                    java.util.logging.Logger.getLogger(PurchaseTab.class.getName()).log(Level.SEVERE, null, ex);
+            
+            try{
+                if (Double.parseDouble(change.getText()) >= 0) {
+                    JOptionPane.showMessageDialog(null, "Please return " + Double.parseDouble(change.getText()));
+                    try {
+                        this.addToHistory(goods);
+                        this.removeFromWarehouse(goods);
+                    } catch (SalesSystemException ex) {
+                        java.util.logging.Logger.getLogger(PurchaseTab.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            } else {
+                else {
                 inputValidation(panel, goods);
                 //TRY AGAIN
             }
+            }
+            catch (NumberFormatException e){
+                inputValidation(panel, goods);
+            }
+            
         }
         if (dialogResult == JOptionPane.NO_OPTION) {
             domainController.cancelCurrentPurchase();
