@@ -30,6 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
+import ee.ut.math.tvt.salessystem.util.HibernateUtil;
+import java.util.Iterator;
+import org.hibernate.Session;
 
 /**
  * Encapsulates everything that has to do with the purchase tab (the tab
@@ -45,6 +48,8 @@ public class PurchaseTab {
 
   private JButton submitPurchase;
 
+  private Session session = HibernateUtil.currentSession();
+  
   private JButton cancelPurchase;
 
   private PurchaseItemPanel purchasePane;
@@ -305,13 +310,39 @@ public class PurchaseTab {
         }
     }
 
-    
     public void addToHistory(List<SoldItem> goods) throws SalesSystemException{
         Date date = new Date();
         HistoryItem h = new HistoryItem(final_price, date, goods);
         model.getHistoryTableModel().addItem(h);
     }
 
+    
+    public void savePurchase(List<SoldItem> goods) throws VerificationFailedException{
+        log.info("Saving purchase");
+		
+		Iterator<SoldItem> it = goods.iterator();
+		SoldItem item;
+		session.beginTransaction();
+		
+		try {
+			HistoryItem newHistoryItem = new HistoryItem(final_price, new Date(), goods);
+			session.save(newHistoryItem);
+			
+			while(it.hasNext()) {
+				item = it.next();
+				//item.setSale(newHistoryItem);
+				session.update(item.getStockItem());
+				session.save(item);
+			}
+			
+			session.getTransaction().commit();
+			
+		} catch(Throwable e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+			throw new VerificationFailedException("DB Failure!");
+		}
+    }
   /* === Helper methods that bring the whole purchase-tab to a certain state
    *     when called.
    */

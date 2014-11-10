@@ -26,6 +26,8 @@ public class SalesSystemUI extends JFrame {
   private static final Logger log = Logger.getLogger(SalesSystemUI.class);
 
   private final SalesDomainController domainController;
+  
+  private final SalesDomainController dc;
 
   // Warehouse model
   private SalesSystemModel model;
@@ -42,6 +44,8 @@ public class SalesSystemUI extends JFrame {
   public SalesSystemUI(SalesDomainController domainController) {
     this.domainController = domainController;
     this.model = new SalesSystemModel(domainController);
+    
+    this.dc = domainController;
 
     // Create singleton instances of the tab classes
     historyTab = new HistoryTab(model);
@@ -69,7 +73,8 @@ public class SalesSystemUI extends JFrame {
 
     addWindowListener(new WindowAdapter() {
       @Override
-      public void windowClosing(WindowEvent e) {
+      public void windowClosing(WindowEvent e) {       
+        dc.endSession();
         System.exit(0);
       }
     });
