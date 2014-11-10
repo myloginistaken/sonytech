@@ -27,21 +27,12 @@
 	<!-- Definitions of classpath variants used for different tasks -->
 
 	<path id="compile.classpath">
-		<fileset dir="lib">
+		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${lib.hibernate.dir}">
              <include name="*.jar"/>
         </fileset>
-	</path>
-
-	<path id="test.classpath">
-		<pathelement location="${build.classes.dir}" />
-		<!-- configuration -->
-		<pathelement location="${conf.dir}" />
-		<fileset dir="lib">
-			<include name="*.jar" />
-		</fileset>
 	</path>
 	
 	<path id="run.classpath">
