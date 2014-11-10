@@ -47,6 +47,15 @@
              <include name="*.jar"/>
         </fileset>
 	</path>
+	
+	<path id = "test.classpath">
+		<pathelement location="${build.classes.dir}" />
+		<!--configuration-->
+		<pathelement location="${conf.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 
 	<!-- Definitions of runnable ant targets -->
 
