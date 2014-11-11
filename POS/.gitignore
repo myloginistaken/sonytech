@@ -9,3 +9,5 @@ bin/*
 # Ignore build directory
 build/*
 
+# Ignore NetBeans files
+nbproject/*
