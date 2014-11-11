@@ -15,14 +15,14 @@
 	<property name="test.reports.dir" value="${build.dir}/reports/" />
 	<property name="dist.jar" value="${dist.dir}/sonytech.jar" />
 	<property name="main.class" value="ee.ut.math.tvt.sonytech.Intro" />
-	<property name="lib.dir" value="${basedir}/lib"/>
-	
+	<property name="lib.dir" value="${basedir}/lib" />
+
 	<!-- database variables -->
-	<property name="data.dir"	value="${basedir}/data"/>
-	<property name="db.file"	value="${data.dir}/POSdb"/>
-	<property name="db.alias"	value="POS"/>
-	<property name="db.url" 	value="jdbc:hsqldb:hsql://localhost/POS"/>
-	<property name="lib.hibernate.dir"   value="${lib.dir}/hibernate"/>
+	<property name="data.dir" value="${basedir}/data" />
+	<property name="db.file" value="${data.dir}/POSdb" />
+	<property name="db.alias" value="POS" />
+	<property name="db.url" value="jdbc:hsqldb:hsql://localhost/POS" />
+	<property name="lib.hibernate.dir" value="${lib.dir}/hibernate" />
 
 	<!-- Definitions of classpath variants used for different tasks -->
 
@@ -31,28 +31,20 @@
 			<include name="*.jar" />
 		</fileset>
 		<fileset dir="${lib.hibernate.dir}">
-             <include name="*.jar"/>
-        </fileset>
+			<include name="*.jar" />
+		</fileset>
 	</path>
-	
-	<path id="run.classpath">
-        <pathelement location="${build.classes.dir}"/>
-        <!-- configuration -->
-        <pathelement location="${conf.dir}"/>
-        <fileset dir="${lib.dir}">
-            <include name="*.jar"/>
-        </fileset>
 
-        <fileset dir="${lib.hibernate.dir}">
-             <include name="*.jar"/>
-        </fileset>
-	</path>
-	
-	<path id = "test.classpath">
+	<path id="run.classpath">
 		<pathelement location="${build.classes.dir}" />
-		<!--configuration-->
+
+		<!-- configuration -->
 		<pathelement location="${conf.dir}" />
 		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+
+		<fileset dir="${lib.hibernate.dir}">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -60,11 +52,12 @@
 	<!-- Definitions of runnable ant targets -->
 
 	<target name="run" depends="build" description="Run the template application">
-		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="test.classpath"
-			fork="yes" >
-		<jvmarg value="-Xdebug" />
-                <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
-                </java>
+		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="run.classpath"
+			fork="yes">
+			<jvmarg value="-Xdebug" />
+			<jvmarg
+				value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044" />
+		</java>
 	</target>
 
 	<target name="build" description="Build the system">
@@ -139,14 +132,15 @@
 				value="${new.build.major.number}.${new.build.minor.number}.${new.build.revision.number}" />
 		</propertyfile>
 	</target>
-	
+
 	<!-- Run application -->
 	<target name="runc" depends="build" description="Run the application (console)">
-		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="test.classpath" fork="yes">
+		<java classname="ee.ut.math.tvt.sonytech.Intro" classpathref="test.classpath"
+			fork="yes">
 			<arg value="console" />
 		</java>
 	</target>
-	
+
 	<!-- Git targets -->
 	<target name="git_commit" description="Commit and push changes to repository">
 		<exec executable="git">
@@ -162,8 +156,9 @@
 		<input message="Name:" addproperty="usname" />
 		<input message="Password:" addproperty="passwd" />
 		<exec executable="git">
-			<arg value="push"/>
-			<arg value="https://${usname}:${passwd}@github.com/myloginistaken/sonytech.git"/>
+			<arg value="push" />
+			<arg
+				value="https://${usname}:${passwd}@github.com/myloginistaken/sonytech.git" />
 		</exec>
 	</target>
 
@@ -181,30 +176,25 @@
 		</exec>
 		<exec executable="git">
 			<arg value="push" />
-			<arg value="https://${usnameTag}:${passwdTag}@github.com/myloginistaken/sonytech.git"/>
+			<arg
+				value="https://${usnameTag}:${passwdTag}@github.com/myloginistaken/sonytech.git" />
 			<arg value="--tags" />
 		</exec>
 	</target>
-	
+
 	<!-- DB targets -->
 	<target name="dbmanager" description="Start the HSQLDB manager">
-        <java
-            classname="org.hsqldb.util.DatabaseManagerSwing"
-            classpathref="run.classpath"
-            fork="yes"
-        >
-            <arg line="--user sa --url ${db.url}" />
-        </java>
-    </target>
+		<java classname="org.hsqldb.util.DatabaseManagerSwing"
+			classpathref="run.classpath" fork="yes">
+			<arg line="--user sa --url ${db.url}" />
+		</java>
+	</target>
 
-    <target name="startdb" description="Start the HSQLDB with the default params">
-        <java
-            classname="org.hsqldb.Server"
-            classpathref="run.classpath"
-            fork="yes"
-        >
-            <arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" /> 
-        </java>
+	<target name="startdb" description="Start the HSQLDB with the default params">
+		<java classname="org.hsqldb.Server" classpathref="run.classpath"
+			fork="yes">
+			<arg line="-database.0 '${db.file}' -dbname.0 '${db.alias}'" />
+		</java>
 	</target>
 
 </project>
