@@ -9,40 +9,60 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Id;
+
 /**
  *
  * @author Sander
  */
+
+@Entity
+@Table(name = "HISTORYITEM")
 public class HistoryItem implements Cloneable, DisplayableItem{
     
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long Id;
+	
+	@Column(name = "total_price")
     private double sum;
-    private String time;
-    private String date;
-    private List details;
+    //private String time;
+    @Column(name = "datetime")
+    private String dateTime;
     
-    public SimpleDateFormat simpleTimeFormat;  
+    @OneToMany(mappedBy = "sale")
+    private List<SoldItem> details;
+    
+    //public SimpleDateFormat simpleTimeFormat;  
+    @Column(name = "datetime")
     public SimpleDateFormat simpleDateFormat;
     
     public HistoryItem(double sum, Date date, List<SoldItem> goods) {
-        this.simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
-        this.simpleTimeFormat = new SimpleDateFormat("hh:mm:ss");
+        this.simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+        //this.simpleTimeFormat = new SimpleDateFormat("hh:mm:ss");
         this.sum = sum;
-        this.time = simpleTimeFormat.format(date);
-        this.date = simpleDateFormat.format(date);
+        //this.time = simpleTimeFormat.format(date);
+        this.dateTime = simpleDateFormat.format(date);
         this.details = goods;
     }
     
     public HistoryItem(double sum, Date date) {
-        this.simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
-        this.simpleTimeFormat = new SimpleDateFormat("hh:mm:ss");
+        this.simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+        //this.simpleTimeFormat = new SimpleDateFormat("hh:mm:ss");
         this.sum = sum;
-        this.time = simpleTimeFormat.format(date);
-        this.date = simpleDateFormat.format(date);
+        //this.time = simpleTimeFormat.format(date);
+        this.dateTime = simpleDateFormat.format(date);
         //this.item = goods;
     }
 
     public String toString() {
-        return sum + " " + time + " " + date + " " + details.toString();
+        return sum + " " + String.format("hh:mm:ss", dateTime) + " " + String.format("yyyy.MM.dd", dateTime) + " " + details.toString();
     }
     
     public double getSum() {
@@ -53,28 +73,28 @@ public class HistoryItem implements Cloneable, DisplayableItem{
         this.sum = sum;
     }
     
-    public String getTime() {
-        return time;
-    }
+    //public String getTime() {
+      //  return time;
+    //}
     
     public List getDetails() {
         return details;
     }
     
-    public void setTime(String time) {
-        this.time = time;
-    }
+    //public void setTime(String time) {
+      //  this.time = time;
+    //}
 
     public String getDate() {
-        return date;
+        return dateTime;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.dateTime = date;
     }
 
     public Long getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Id;
     }
 
     public String getName() {

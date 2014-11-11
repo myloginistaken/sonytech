@@ -36,9 +36,9 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
         switch (columnIndex){
             case 0:
                     return item.getDate();
+            //case 1:
+                    //return item.getTime();
             case 1:
-                    return item.getTime();
-            case 2:
                     return item.getSum();
         }
         throw new IllegalArgumentException("Column index out of range");
@@ -54,7 +54,7 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
 
             for (final HistoryItem item : rows) {
                     buffer.append(item.getDate() + "\t");
-                    buffer.append(item.getTime() + "\t");
+                    //buffer.append(item.getTime() + "\t");
                     buffer.append(item.getSum() + "\t");
                     buffer.append("\n");
             }
