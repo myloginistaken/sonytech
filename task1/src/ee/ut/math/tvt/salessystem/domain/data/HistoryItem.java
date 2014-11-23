@@ -106,7 +106,7 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 	public static String timeDate() {
 
 		Date now = new Date();
-		SimpleDateFormat upDate = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+		SimpleDateFormat upDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String dateTime = upDate.format(now);
 		return dateTime;
 	}
