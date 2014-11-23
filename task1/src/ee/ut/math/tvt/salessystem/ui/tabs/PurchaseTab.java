@@ -200,8 +200,7 @@ public class PurchaseTab {
       log.debug("Contents of the current basket:\n" + model.getCurrentPurchaseTableModel());
       log.debug(" \n\n " + model.getCurrentPurchaseTableModel().getTableRows() + " \n\n ");
       //domainController.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows()
-      this.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows()
-      );
+      this.submitCurrentPurchase(model.getCurrentPurchaseTableModel().getTableRows());
       this.endSale();
       model.getCurrentPurchaseTableModel().clear();
     } catch (VerificationFailedException e1) {
@@ -312,7 +311,7 @@ public class PurchaseTab {
 
     public void addToHistory(List<SoldItem> goods) throws SalesSystemException{
     	String datetime = HistoryItem.timeDate();
-        HistoryItem h = new HistoryItem(final_price, datetime, goods);
+        HistoryItem h = new HistoryItem(datetime, goods);
         model.getHistoryTableModel().addItem(h);
     }
 
@@ -326,7 +325,7 @@ public class PurchaseTab {
 		String datetime = HistoryItem.timeDate();
 		
 		try {
-			HistoryItem newHistoryItem = new HistoryItem(final_price, datetime, goods);
+			HistoryItem newHistoryItem = new HistoryItem(datetime, goods);
 			session.save(newHistoryItem);
 			
 			while(it.hasNext()) {

@@ -28,7 +28,7 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
     private static final Logger log = Logger.getLogger(HistoryInfoTableModel.class);
     
     public HistoryInfoTableModel() {
-        super(new String[] {"Date", "Time", "Total"});
+        super(new String[] {"DateTime", "Total"});
     }
     
     @Override

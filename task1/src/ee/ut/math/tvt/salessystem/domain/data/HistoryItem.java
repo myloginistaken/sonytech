@@ -36,9 +36,6 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 	@OneToMany(mappedBy = "sale")
     private List<SoldItem> details;
     
-    public SimpleDateFormat simpleTimeFormat;
-    public SimpleDateFormat simpleDateFormat;
-    
     public HistoryItem(String date, List<SoldItem> goods) {
         this.sum = getTotalSum();
         this.datetime = date;
@@ -49,6 +46,9 @@ public class HistoryItem implements Cloneable, DisplayableItem{
         this.sum = 0.0;
         this.datetime = date;
         this.details = new ArrayList<SoldItem>();
+    }
+    
+    public HistoryItem() {
     }
 
     public String toString() {
