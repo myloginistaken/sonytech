@@ -60,11 +60,8 @@ public class HistoryInfoTableModel extends SalesSystemTableModel<HistoryItem>{
             return buffer.toString();
     }
 	
-    
-    public void addItem(final HistoryItem item) throws SalesSystemException{
-        
-        rows.add(item);
+    public void addItem(final HistoryItem item){
+		rows.add(item);
         fireTableDataChanged();
-               
     }
 }

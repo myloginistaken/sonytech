@@ -66,7 +66,7 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
     /**
      * Add new StockItem to table.
      */
-    public void addItem(final SoldItem item) throws NotEnoughInStockException{
+    public void addItem(final SoldItem item){
         /**
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
@@ -75,7 +75,6 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
     		SoldItem soldItem = getItemById(item.getId());
     		if (item.getQuantity() > item.getStockItem().getQuantity()+soldItem.getQuantity()){
                 log.debug("More ordered than in stock.");
-                throw new NotEnoughInStockException();     
             }
             else{   
     	        rows.add(item);
@@ -89,7 +88,5 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
         		fireTableDataChanged();
         	}
     	}
-        
-        
     }
 }
