@@ -3,3 +3,4 @@
 */bin
 */log
 */data/POSdb.properties
+*/data/POSdb.lck

@@ -1,9 +1,11 @@
 package ee.ut.math.tvt.salessystem.domain.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +28,7 @@ public class Sale implements DisplayableItem {
     private Long id;
 
     @OneToMany(targetEntity = SoldItem.class, mappedBy = "sale", cascade = CascadeType.ALL)
-    private Set<SoldItem> soldItems;
+    private List<SoldItem> soldItems;
     private Date sellingTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -35,10 +37,16 @@ public class Sale implements DisplayableItem {
 
     /** Empty constructors are used by hibernate */
     public Sale() {
+    	this.soldItems = new ArrayList<>();
     }
+    
+    public Sale(Client client) {
+		this.client = client;
+		this.soldItems = new ArrayList<>();
+	}
 
     public Sale(List<SoldItem> goods) {
-        this.soldItems = new HashSet<SoldItem>(goods);
+        this.soldItems = goods;
         this.sellingTime = new Date();
     }
 
@@ -58,11 +66,11 @@ public class Sale implements DisplayableItem {
         this.sellingTime = sellingTime;
     }
 
-    public Set<SoldItem> getSoldItems() {
+    public List<SoldItem> getSoldItems() {
         return soldItems;
     }
 
-    public void setSoldItems(Set<SoldItem> soldItems) {
+    public void setSoldItems(List<SoldItem> soldItems) {
         this.soldItems = soldItems;
     }
 
@@ -78,6 +86,17 @@ public class Sale implements DisplayableItem {
         item.setSale(this);
         soldItems.add(item);
     }
+    
+    public void addItem(StockItem item, int quantity) {
+		for (SoldItem sItem: soldItems) {
+			if (sItem.getStockItem() == item){
+				sItem.setQuantity(sItem.getQuantity() + quantity);
+				return;
+			}
+		}
+		SoldItem sItem = new SoldItem(item, quantity);
+		soldItems.add(sItem);
+	}
 
     public double getSum() {
         double sum = 0.0;
