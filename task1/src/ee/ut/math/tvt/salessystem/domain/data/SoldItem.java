@@ -103,4 +103,8 @@ public class SoldItem implements Cloneable, DisplayableItem {
         this.stockItem = stockItem;
     }
     
+    public double getTotal() {
+    	return price * ((double) quantity);
+    }
+    
 }
