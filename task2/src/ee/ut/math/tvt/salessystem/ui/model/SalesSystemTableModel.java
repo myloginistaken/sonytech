@@ -40,43 +40,46 @@ public abstract class SalesSystemTableModel<T extends DisplayableItem> extends
     }
 
     public int getRowCount() {
-    	if (getRows() == null) {
-    		return 0;
-    	}
-        return getRows().size();
+        return getTableRows().size();
     }
 
     public Object getValueAt(final int rowIndex, final int columnIndex) {
-        return getColumnValue(getRows().get(rowIndex), columnIndex);
+        return getColumnValue(getTableRows().get(rowIndex), columnIndex);
     }
 
     // search for item with the specified id
     public T getItemById(final long id) {
-        for (final T item : getRows()) {
+        for (final T item : getTableRows()) {
             if (item.getId() == id)
                 return item;
         }
         throw new NoSuchElementException();
     }
 
-    public List<T> getTableRows() {
-        return getRows();
+    public abstract List<T> getTableRows();
+    public abstract void clearTableRows();
+
+    public void clear() {
+        clearTableRows();
+        fireTableDataChanged();
     }
 
     public void populateWithData(final List<T> data) {
-    	getRows().clear();
-    	getRows().addAll(data);
+    	getTableRows().clear();
+    	getTableRows().addAll(data);
     }
     
     public void addRow(T row) {
-    	getRows().add(row);
+    	getTableRows().add(row);
         fireTableDataChanged();
     }
     
     public T getRow(int index) {
-        return getRows().get(index);
+        return getTableRows().get(index);
     }
     
-    public abstract List<T> getRows();
+    public List<T> getRows() {
+        return getTableRows();
+    }
     
 }

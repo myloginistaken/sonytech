@@ -144,15 +144,17 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
     }
 
 	@Override
-	public List<SoldItem> getRows() {
+	public List<SoldItem> getTableRows() {
 		if (sale == null) {
 			return null;
 		}
 		return sale.getSoldItems();
 	}
-	
-	public void clear() {
-		getRows().clear();
+
+	@Override
+	public void clearTableRows() {
+		// TODO Auto-generated method stub
+		sale = new Sale(new ArrayList<SoldItem>());
 	}
 
 }

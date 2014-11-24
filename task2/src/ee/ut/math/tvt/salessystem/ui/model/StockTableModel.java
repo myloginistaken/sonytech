@@ -97,11 +97,18 @@ public class StockTableModel extends SalesSystemTableModel<StockItem> {
 
 		return buffer.toString();
 	}
-
+	
 	@Override
-	public List<StockItem> getRows() {
+	public List<StockItem> getTableRows() {
 		// TODO Auto-generated method stub
 		return rows;
+	}
+
+	@Override
+	public void clearTableRows() {
+		// TODO Auto-generated method stub
+		rows.clear();
+		
 	}
 
 }

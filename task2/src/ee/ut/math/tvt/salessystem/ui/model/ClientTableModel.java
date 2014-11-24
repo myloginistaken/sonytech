@@ -49,8 +49,14 @@ public class ClientTableModel extends SalesSystemTableModel<Client> {
 	}
 
 	@Override
-	public List<Client> getRows() {
+	public List<Client> getTableRows() {
 		// TODO Auto-generated method stub
 		return rows;
+	}
+
+	@Override
+	public void clearTableRows() {
+		// TODO Auto-generated method stub
+		rows.clear();
 	}
 }
