@@ -50,7 +50,7 @@
 		</fileset>
 	</path>
 	
-	<path id="test-classpath">
+	<path id="test.classpath">
 	    <pathelement location="${conf.dir}" />
 	    <pathelement path="${build.classes.dir}/" />
 		<pathelement path="${build.test.dir}/" />
@@ -221,8 +221,8 @@
             debuglevel="lines,vars,source"
             encoding="utf-8"
             compiler="modern"
-            target="1.5"
-            source="1.5"
+            target="1.7"
+            source="1.7"
         	classpathref="test.classpath"
         	includeantruntime="false">
         </javac>

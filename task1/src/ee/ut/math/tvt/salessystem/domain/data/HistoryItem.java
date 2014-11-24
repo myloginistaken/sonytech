@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 	@Column(name = "datetime")
     private String datetime;
 	
-	@OneToMany(mappedBy = "sale")
+	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<SoldItem> details;
     
     public HistoryItem(String date, List<SoldItem> goods) {

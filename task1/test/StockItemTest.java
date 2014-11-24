@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
 
-public class StockItemTest() {
+public class StockItemTest {
 	private StockItem stockItem;
 	
 	@Before
