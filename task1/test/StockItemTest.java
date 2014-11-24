@@ -11,15 +11,15 @@ public class StockItemTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		stockItem = new StockItem((long) 100, "Stock Item", "Description", 12.99, 9000);
+		stockItem = new StockItem((long) 100, "Item", "Item Description", 12.99, 9000);
 	}
 	
 	@Test
 	public void testClone() {
 		StockItem cloneItem = (StockItem) stockItem.clone();
 
-		assertEquals("Stock Item",cloneItem.getName());
-		assertEquals("Description",cloneItem.getDescription());
+		assertEquals("Item",cloneItem.getName());
+		assertEquals("Item Description",cloneItem.getDescription());
 		assertEquals(9000,cloneItem.getQuantity());
 		assertEquals(new Long(100),cloneItem.getId());
 		assertEquals(12.99d,cloneItem.getPrice(),0.001d);
@@ -28,14 +28,8 @@ public class StockItemTest {
 	@Test
 	public void testGetColumn() {
 		assertEquals((long) 100, stockItem.getColumn(0));
-        assertEquals("Stock Item",stockItem.getColumn(1));
+        assertEquals("Item",stockItem.getColumn(1));
         assertEquals( 12.99,stockItem.getColumn(2));
         assertEquals(9000,stockItem.getColumn(3));
 	}
-	
-	@Test(expected = RuntimeException.class)
-    public void testException() {
-            stockItem.getColumn(5);
-    }
-	
 }
