@@ -1,5 +1,7 @@
 package ee.ut.math.tvt.salessystem.ui.model;
 
+import java.util.NoSuchElementException;
+
 import org.apache.log4j.Logger;
 
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
@@ -69,16 +71,25 @@ public class PurchaseInfoTableModel extends SalesSystemTableModel<SoldItem> {
          * XXX In case such stockItem already exists increase the quantity of the
          * existing stock.
          */
-        if (item.getQuantity() > item.getStockItem().getQuantity()){
-            log.debug("More ordered than in stock.");
-            throw new NotEnoughInStockException();     
-        }
-        else{   
-        rows.add(item);
-        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
-        fireTableDataChanged();
-        }
+    	try {
+    		SoldItem soldItem = getItemById(item.getId());
+    		if (item.getQuantity() > item.getStockItem().getQuantity()+soldItem.getQuantity()){
+                log.debug("More ordered than in stock.");
+                throw new NotEnoughInStockException();     
+            }
+            else{   
+    	        rows.add(item);
+    	        log.debug("Added " + item.getName() + " quantity of " + item.getQuantity());
+    	        fireTableDataChanged();
+            }
+    	} 
+    	catch(NoSuchElementException e) {
+    		if(item.getStockItem().getQuantity()>0 && item.getQuantity()<=item.getStockItem().getQuantity()) {
+        		rows.add(item);
+        		fireTableDataChanged();
+        	}
+    	}
+        
         
     }
-    
 }
