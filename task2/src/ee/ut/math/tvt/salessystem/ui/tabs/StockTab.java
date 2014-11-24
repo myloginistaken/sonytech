@@ -56,6 +56,11 @@ public class StockTab {
         panel.add(drawStockMainPane(), gc);
         return panel;
     }
+    
+    public void refresh() {
+    	model.getWarehouseTableModel().populateWithData(controller.getAllStockItems());
+		model.getWarehouseTableModel().fireTableDataChanged();
+    }
 
     // warehouse menu
     private Component drawStockMenuPane() {

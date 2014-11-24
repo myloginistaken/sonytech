@@ -5,10 +5,13 @@ import ee.ut.math.tvt.salessystem.domain.data.Client;
 import ee.ut.math.tvt.salessystem.domain.data.Sale;
 import ee.ut.math.tvt.salessystem.domain.data.SoldItem;
 import ee.ut.math.tvt.salessystem.domain.data.StockItem;
+import ee.ut.math.tvt.salessystem.domain.exception.VerificationFailedException;
 import ee.ut.math.tvt.salessystem.ui.model.SalesSystemModel;
 import ee.ut.math.tvt.salessystem.util.HibernateUtil;
+
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -65,21 +68,15 @@ public class SalesDomainControllerImpl implements SalesDomainController {
     }
 
 
-    public void submitCurrentPurchase(List<SoldItem> soldItems, Client currentClient) {
-
-        // Begin transaction
+    public void registerSale(Sale sale) throws VerificationFailedException {
+    	// Begin transaction
         Transaction tx = session.beginTransaction();
 
-        // construct new sale object
-        Sale sale = new Sale(soldItems);
         //sale.setId(null);
         sale.setSellingTime(new Date());
 
-        // set client who made the sale
-        sale.setClient(currentClient);
-
         // Reduce quantities of stockItems in warehouse
-        for (SoldItem item : soldItems) {
+        for (SoldItem item : sale.getSoldItems()) {
             // Associate with current sale
             item.setSale(sale);
 
@@ -94,8 +91,7 @@ public class SalesDomainControllerImpl implements SalesDomainController {
         tx.commit();
 
         model.getPurchaseHistoryTableModel().addRow(sale);
-
-    }
+	}
 
 
     public void createStockItem(StockItem stockItem) {
@@ -115,6 +111,8 @@ public class SalesDomainControllerImpl implements SalesDomainController {
 
     public void startNewPurchase() {
         // XXX - Start new purchase
+    	Sale sale = new Sale(model.getSelectedClient());
+    	model.setSale(sale);
         log.info("New purchase started");
     }
 
