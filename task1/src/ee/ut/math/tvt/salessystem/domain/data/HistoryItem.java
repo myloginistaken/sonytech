@@ -36,14 +36,11 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 	
 	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
     private List<SoldItem> details;
-
-	private double totalPrice;
     
     public HistoryItem(String date, List<SoldItem> goods) {
         this.sum = getTotalSum();
         this.datetime = date;
         this.details = goods;
-        this.totalPrice = getTotalSum();
     }
     
     public HistoryItem(String date) {
@@ -113,9 +110,5 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 		SimpleDateFormat upDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String dateTime = upDate.format(now);
 		return dateTime;
-	}
-	
-	public double getTotalPrice() {
-		return totalPrice;
 	}
 }
