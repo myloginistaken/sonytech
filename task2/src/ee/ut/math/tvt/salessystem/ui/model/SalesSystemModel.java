@@ -40,24 +40,12 @@ public class SalesSystemModel {
         // Load data from the database
 
         List<StockItem> stockItems = domainController.getAllStockItems();
-        for (StockItem s : stockItems){
-            System.out.println("StockItems: " + s);         
-        }
-        System.out.println(stockItems);
         warehouseTableModel.populateWithData(stockItems);
 
         List<Client> clients = domainController.getAllClients();
-        for (Client s : clients){
-            System.out.println("Clients: " + s);         
-        }
-        System.out.println(clients);
         clientTableModel.populateWithData(clients);
 
         List<Sale> sales = domainController.getAllSales();
-        for (Sale s : sales){
-            System.out.println("Sales: " + s);         
-        }
-        System.out.println(sales);
         purchaseHistoryTableModel.populateWithData(sales);
 
     }
