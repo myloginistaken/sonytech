@@ -14,10 +14,11 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 	private static final long serialVersionUID = 1L;
 
 	private static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-	private ArrayList<Sale> rows;
+	private ArrayList<Sale> purchaseItem;
 	
 	public PurchaseHistoryTableModel() {
 		super(new String[] { "Id", "Time", "Sum", "Client" });
+                purchaseItem = new ArrayList<Sale>();
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 			buffer.append(headers[i] + "\t");
 		buffer.append("\n");
 
-		for (final Sale sale : getRows()) {
+		for (final Sale sale : getTableRows()) {
 			buffer.append(sale.getId() + "\t");
 			//buffer.append(sale.getClient() != null ? sale.getClient().getFirstName() : "" + "\t");
 			buffer.append(sale.getSum() + "\t");
@@ -56,12 +57,12 @@ public class PurchaseHistoryTableModel extends SalesSystemTableModel<Sale> {
 	@Override
 	public List<Sale> getTableRows() {
 		// TODO Auto-generated method stub
-		return rows;
+		return purchaseItem;
 	}
 
 	@Override
 	public void clearTableRows() {
 		// TODO Auto-generated method stub
-		rows.clear();
+		purchaseItem.clear();
 	}
 }
