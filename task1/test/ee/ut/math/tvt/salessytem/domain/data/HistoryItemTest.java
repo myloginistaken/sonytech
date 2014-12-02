@@ -38,7 +38,7 @@ public class HistoryItemTest {
     @Test
     public void testGetSumWithNoItems() {
 		HistoryItem historyItem = new HistoryItem();
-    	assertEquals(0.0, historyItem.getTotalPrice(), 0.0001);
+    	assertEquals(0.0, historyItem.getTotalSum(), 0.0001);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class HistoryItemTest {
     	SoldItem soldItem = new SoldItem(stockItem,4);
     	List<SoldItem> order = Arrays.asList(soldItem);
 		HistoryItem historyItem = new HistoryItem("2014.11.24 22:22:22", order);
-    	assertEquals(historyItem.getTotalPrice(),stockItem.getPrice()*soldItem.getQuantity(), 0.0001);
+    	assertEquals(historyItem.getTotalSum(),stockItem.getPrice()*soldItem.getQuantity(), 0.0001);
     }
     
     @Test
@@ -66,6 +66,6 @@ public class HistoryItemTest {
 		HistoryItem historyItem = new HistoryItem("2014.11.24 22:22:22", order);
 		double result = stockItem1.getPrice()*soldItem1.getQuantity()+stockItem2.getPrice()*soldItem2.getQuantity()+stockItem3.getPrice()*soldItem3.getQuantity()+stockItem4.getPrice()*soldItem4.getQuantity();
     	
-		assertEquals(historyItem.getTotalPrice(),result, 0.0001);
+		assertEquals(historyItem.getTotalSum(),result, 0.0001);
     }
 }

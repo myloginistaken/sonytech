@@ -87,7 +87,7 @@ public class HistoryItem implements Cloneable, DisplayableItem{
 		sum = getTotalSum();
 	}
 	
-	private double getTotalSum() {
+	public double getTotalSum() {
 		
 		if (getDetails() == null) {
 			return 0;
